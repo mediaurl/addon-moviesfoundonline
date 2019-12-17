@@ -1,5 +1,7 @@
-import { WorkerActions } from "@watchedcom/sdk";
+import { WorkerHandlers } from "@watchedcom/sdk";
 
-export const directoryHandler: WorkerActions['directory'] = async (input, ctx) => {
-    const {addon} = ctx
+export const directoryHandler: WorkerHandlers['directory'] = async (
+    input, ctx
+    ) => {
+
 }
