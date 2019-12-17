@@ -1,4 +1,5 @@
 import { createWorkerAddon } from '@watchedcom/sdk';
+import { directoryHandler } from './handlers';
 
 export const moviesFoundOnline = createWorkerAddon({
     id: 'moviesfoundonline.com',
@@ -12,6 +13,4 @@ export const moviesFoundOnline = createWorkerAddon({
     }]
 })
 
-moviesFoundOnline.registerActionHandler('directory', async (input, ctx) => {
-    return {hello: 'world'}
-})
+moviesFoundOnline.registerActionHandler('directory', directoryHandler)
