@@ -9,11 +9,27 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1",
     "ts-node-dev": "^1.0.0-pre.44",
+    "tslint": "^5.20.1",
     "typescript": "^3.7.3"
   },
   "peerDependencies": {
     "@watchedcom/sdk": "*",
     "@watchedcom/schema": "*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,css,md}": [
+      "tslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
