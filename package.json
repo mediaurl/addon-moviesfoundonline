@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.15",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
@@ -31,5 +32,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3"
   }
 }
