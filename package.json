@@ -13,6 +13,7 @@
     "typescript": "^3.7.3"
   },
   "peerDependencies": {
-    "@watchedcom/sdk": "*"
+    "@watchedcom/sdk": "*",
+    "@watchedcom/schema": "*"
   }
 }

@@ -7,10 +7,39 @@ export const moviesFoundOnline = createWorkerAddon({
     name: 'Moviesfoundonline.com',
     homepage: 'https://moviesfoundonline.com/',
     description: 'Addon for moviesfoundonline.com',
-    resources: [{
-        actions: ['directory', 'item'],
-        itemTypes: ['movie']
-    }]
+    flags: {
+        "adult": false
+    },
+    resources: [
+        {
+            "id": "movie",
+            "name": {
+                "en": "Movies",
+                "de": "Filme"
+            },
+            "actions": [
+                "directory",
+                "item"
+            ],
+            "itemTypes": [
+                "movie"
+            ],
+            "requestArgs": [
+                "id"
+            ]
+        }
+    ],
+    dashboards: [
+        {
+            "id": "full_movies",
+            "name": {
+                "en": "Recent Full Movies",
+            },
+            "args": {
+                "resourceId": "movie"
+            }
+        }
+    ]
 })
 
 moviesFoundOnline.registerActionHandler('directory', directoryHandler)
