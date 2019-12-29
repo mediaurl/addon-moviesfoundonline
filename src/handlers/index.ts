@@ -75,9 +75,11 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 // }
 export const itemHandler: WorkerHandlers["item"] = async (
     input,
-    { fetchRemote }
+    { fetchRemote, addon }
 ) => {
     console.log("itemHandler", { input });
+
+    const addonId = addon.getProps().id;
 
     const baseUrl = "https://moviesfoundonline.com/video/";
     const {
@@ -98,12 +100,20 @@ export const itemHandler: WorkerHandlers["item"] = async (
         .first()
         .text();
     const description = $("div.post-entry p").text();
-    const youtubeEmbedSrc = $("iframe")
+
+    const frameSrc = $("iframe")
         .first()
         .prop("src");
-    const youtubeId = youtubeEmbedSrc.split("/").pop();
 
-    console.log({ youtubeEmbedSrc });
+    // console.log({ frameSrc });
+
+    // const isYoutubeSrc = /youtube/.test(frameSrc)
+
+    // if (!isYoutubeSrc) {
+    //     throw new Error('Youtube source not found')
+    // }
+
+    const youtubeId = frameSrc.split("/").pop();
 
     return {
         type: "movie",
@@ -112,14 +122,15 @@ export const itemHandler: WorkerHandlers["item"] = async (
         },
         name,
         description,
-        videos: [
+        sources: [
             {
-                type: "youtube",
-                id: youtubeId,
+                type: "url",
+                id: `${addonId}-${frameSrc}`,
                 name,
-                youtubeId
-                // youtubeId: 'xRjvmVaFHkk'
+                url: `https://www.youtube.com/watch?v=${youtubeId}`
+                // url: frameSrc
             }
-        ]
+        ],
+        videos: []
     };
 };
