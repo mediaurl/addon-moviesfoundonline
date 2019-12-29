@@ -39,47 +39,21 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
             ids: { id },
             name,
             images: {
-                poster: {
-                    original: posterImgElem.attr("src")
-                }
+                poster: posterImgElem.attr("src")
             }
         });
     });
 
     return {
         items
-        // [
-        //     {
-        //         type: "movie",
-        //         ids: {
-        //             id: "chasing-christmas-2005"
-        //         },
-        //         name: "Chasing Christmas (2005)",
-        //         images: {
-        //             poster: {
-        //                 original:
-        //                     "https://mfo.bladecdn.net/wp-content/uploads/2019/12/chasing-christmas-360x240.jpg"
-        //             }
-        //         }
-        //     }
-        // ]
     };
 };
 
-// const input = {
-//     resourceId: 'movie',
-//     type: 'movie',
-//     ids: { id: 'chasing-christmas-2005' },
-//     name: 'Chasing Christmas (2005)',
-//     language: 'en'
-// }
 export const itemHandler: WorkerHandlers["item"] = async (
     input,
     { fetchRemote, addon }
 ) => {
     console.log("itemHandler", { input });
-
-    const addonId = addon.getProps().id;
 
     const baseUrl = "https://moviesfoundonline.com/video/";
     const {
@@ -105,27 +79,17 @@ export const itemHandler: WorkerHandlers["item"] = async (
         .first()
         .prop("src");
 
-    // console.log({ frameSrc });
-
-    // const isYoutubeSrc = /youtube/.test(frameSrc)
-
-    // if (!isYoutubeSrc) {
-    //     throw new Error('Youtube source not found')
-    // }
-
     const youtubeId = frameSrc.split("/").pop();
 
     return {
         type: "movie",
-        ids: {
-            id
-        },
+        ids: { id },
         name,
         description,
         sources: [
             {
                 type: "url",
-                id: `${addonId}-${frameSrc}`,
+                id: frameSrc,
                 name,
                 url: `https://www.youtube.com/watch?v=${youtubeId}`
                 // url: frameSrc

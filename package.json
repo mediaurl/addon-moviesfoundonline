@@ -1,39 +1,38 @@
 {
-  "name": "addon-moviesfoundonline",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist",
-  "scripts": {
-    "build": "tsc",
-    "develop": "ts-node-dev --respawn --transpileOnly --no-notify",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "devDependencies": {
-    "@types/cheerio": "^0.22.15",
-    "husky": "^3.1.0",
-    "lint-staged": "^9.5.0",
-    "prettier": "^1.19.1",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.3"
-  },
-  "peerDependencies": {
-    "@watchedcom/sdk": "*",
-    "@watchedcom/schema": "*"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
+    "name": "addon-moviesfoundonline",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist",
+    "scripts": {
+        "build": "tsc",
+        "start": "ts-node-dev src",
+        "develop": "ts-node-dev --respawn --transpileOnly --no-notify src",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "@types/cheerio": "^0.22.15",
+        "husky": "^3.1.0",
+        "lint-staged": "^9.5.0",
+        "prettier": "^1.19.1",
+        "ts-node-dev": "^1.0.0-pre.44",
+        "tslint": "^5.20.1",
+        "typescript": "^3.7.3"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.3",
+        "@watchedcom/sdk": "latest",
+        "@watchedcom/schema": "latest"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,ts,tsx,css,md}": [
+            "tslint --fix",
+            "prettier --write",
+            "git add"
+        ]
     }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,css,md}": [
-      "tslint --fix",
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.3"
-  }
 }
