@@ -2,7 +2,8 @@
     "compilerOptions": {
         "target": "es5",
         "strictNullChecks": true,
+        "noImplicitAny": true,
         "outDir": "dist"
     },
-    "include": ["src/addon.ts"]
+    "include": ["src"]
 }
