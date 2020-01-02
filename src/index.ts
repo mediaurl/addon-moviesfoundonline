@@ -25,18 +25,18 @@ export const moviesFoundOnline = createWorkerAddon({
                 imageShape: "landscape"
             }
         }
-    ],
-    dashboards: [
-        {
-            id: "full_movies",
-            name: {
-                en: "Recent Full Movies"
-            },
-            args: {
-                resourceId: "movie"
-            }
-        }
     ]
+    // dashboards: [
+    //     {
+    //         id: "full_movies",
+    //         name: {
+    //             en: "Recent Full Movies"
+    //         },
+    //         args: {
+    //             resourceId: "movie"
+    //         }
+    //     }
+    // ]
 });
 
 moviesFoundOnline.registerActionHandler("directory", directoryHandler);

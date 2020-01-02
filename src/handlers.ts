@@ -7,6 +7,17 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
     { fetchRemote }
 ) => {
     console.log("directoryHandler", { input });
+
+    return {
+        items: [
+            {
+                type: "directory",
+                id: "free-movies",
+                name: "Full movies"
+            }
+        ]
+    };
+
     const items: Item[] = [];
     const result = await fetchRemote("https://moviesfoundonline.com/", {});
 
