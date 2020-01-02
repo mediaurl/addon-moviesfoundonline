@@ -1,5 +1,4 @@
-import { Item } from "@watchedcom/schema";
-import { WorkerHandlers } from "@watchedcom/sdk";
+import { Item, WorkerHandlers } from "@watchedcom/sdk";
 import * as cheerio from "cheerio";
 
 export const directoryHandler: WorkerHandlers["directory"] = async (
@@ -13,7 +12,10 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
             {
                 type: "directory",
                 id: "free-movies",
-                name: "Full movies"
+                name: "Full movies",
+                args: {
+                    resourceId: "movie"
+                }
             }
         ]
     };
