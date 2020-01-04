@@ -7,21 +7,55 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 ) => {
     console.log("directoryHandler", { input });
 
-    return {
-        items: [
-            {
-                type: "directory",
-                id: "free-movies",
-                name: "Full movies",
-                args: {
-                    resourceId: "movie"
+    const { directoryId } = input;
+
+    if (!directoryId) {
+        return {
+            items: [
+                {
+                    type: "directory",
+                    id: "free-movies",
+                    name: "Full Movies"
+                },
+                {
+                    type: "directory",
+                    id: "short-films",
+                    name: "Short Films"
+                },
+                {
+                    type: "directory",
+                    id: "free-documentaries",
+                    name: "Documentaries"
+                },
+                {
+                    type: "directory",
+                    id: "animation",
+                    name: "Animation"
+                },
+                {
+                    type: "directory",
+                    id: "series-shows",
+                    name: "Series & Shows"
+                },
+                {
+                    type: "directory",
+                    id: "stand-up-comedy",
+                    name: "Stand-Up & Comedy"
+                },
+                {
+                    type: "directory",
+                    id: "viral-videos",
+                    name: "Viral Videos"
                 }
-            }
-        ]
-    };
+            ]
+        };
+    }
 
     const items: Item[] = [];
-    const result = await fetchRemote("https://moviesfoundonline.com/", {});
+    const result = await fetchRemote(
+        "https://moviesfoundonline.com/" + directoryId,
+        {}
+    );
 
     if (!result.ok) {
         throw new Error(`Request finished with status ${result.status}`);
