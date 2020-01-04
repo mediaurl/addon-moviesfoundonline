@@ -11,6 +11,7 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
     if (!directoryId) {
         return {
+            hasMore: false,
             items: [
                 {
                     type: "directory",
