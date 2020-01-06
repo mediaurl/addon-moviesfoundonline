@@ -5,9 +5,8 @@
   "main": "dist",
   "scripts": {
     "build": "tsc -p .",
-    "start": "npm run serve",
-    "serve": "node dist/serve",
-    "develop": "ts-node-dev --respawn --transpileOnly --no-notify",
+    "start": "watched-sdk start --prod dist",
+    "develop": "watched-sdk start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
