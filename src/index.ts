@@ -20,7 +20,8 @@ export const moviesFoundOnline = createWorkerAddon({
             actions: ["directory", "item"],
             itemTypes: ["movie"],
             defaultOptions: {
-                imageShape: "landscape"
+                imageShape: "landscape",
+                displayName: true
             }
         }
     ]
