@@ -11,23 +11,19 @@ export const moviesFoundOnline = createWorkerAddon({
     flags: {
         adult: false
     },
-    resources: [
-        {
-            name: {
-                en: "Movies",
-                de: "Filme"
-            },
-            actions: ["directory", "item"],
-            itemTypes: ["movie"],
-            defaultOptions: {
-                imageShape: "landscape",
-                displayName: true
-            }
-        }
-    ]
+    actions: ["directory", "item"],
+    itemTypes: ["movie"],
+    defaultOptions: {
+        imageShape: "landscape",
+        displayName: true
+    }
 });
 
-moviesFoundOnline.registerActionHandler("directory", directoryHandler);
-moviesFoundOnline.registerActionHandler("item", itemHandler);
+moviesFoundOnline.registerActionHandler("directory", directoryHandler, {
+    cache: { enabled: true }
+});
+moviesFoundOnline.registerActionHandler("item", itemHandler, {
+    cache: { enabled: true }
+});
 
 export default moviesFoundOnline;
