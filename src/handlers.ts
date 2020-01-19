@@ -127,22 +127,14 @@ export const itemHandler: WorkerHandlers["item"] = async (
         .first()
         .prop("src");
 
-    const youtubeId = frameSrc.split("/").pop();
+    // const youtubeId = frameSrc.split("/").pop();
 
     return {
         type: "movie",
         ids: { id },
         name,
         description,
-        sources: [
-            {
-                type: "url",
-                id: frameSrc,
-                name,
-                url: `https://www.youtube.com/watch?v=${youtubeId}`
-                // url: frameSrc
-            }
-        ],
+        sources: [{ type: "url", name, url: frameSrc }],
         videos: []
     };
 };
