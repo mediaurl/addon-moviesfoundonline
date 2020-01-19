@@ -104,12 +104,9 @@ export const itemHandler: WorkerHandlers["item"] = async (
     console.log("itemHandler", { input });
 
     const baseUrl = "https://moviesfoundonline.com/video/";
-    const {
-        ids: { id }
-    } = input;
+    const { id } = input.ids;
 
     const result = await fetchRemote(baseUrl + id, {});
-
     const html = await result.text();
 
     if (!result.ok) {
@@ -126,8 +123,6 @@ export const itemHandler: WorkerHandlers["item"] = async (
     const frameSrc = $("iframe")
         .first()
         .prop("src");
-
-    // const youtubeId = frameSrc.split("/").pop();
 
     return {
         type: "movie",
