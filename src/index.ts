@@ -19,11 +19,7 @@ export const moviesFoundOnline = createWorkerAddon({
     }
 });
 
-moviesFoundOnline.registerActionHandler("directory", directoryHandler, {
-    cache: { enabled: true }
-});
-moviesFoundOnline.registerActionHandler("item", itemHandler, {
-    cache: { enabled: true }
-});
+moviesFoundOnline.registerActionHandler("directory", directoryHandler);
+moviesFoundOnline.registerActionHandler("item", itemHandler);
 
 export default moviesFoundOnline;

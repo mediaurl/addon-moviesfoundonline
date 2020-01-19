@@ -3,11 +3,12 @@ import * as cheerio from "cheerio";
 
 export const directoryHandler: WorkerHandlers["directory"] = async (
     input,
-    { fetchRemote }
+    { fetchRemote, requestCache }
 ) => {
     console.log("directoryHandler", { input });
 
     const { directoryId } = input;
+    await requestCache(directoryId);
 
     if (!directoryId) {
         return {
@@ -99,12 +100,13 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
 export const itemHandler: WorkerHandlers["item"] = async (
     input,
-    { fetchRemote, addon }
+    { fetchRemote, requestCache }
 ) => {
     console.log("itemHandler", { input });
 
     const baseUrl = "https://moviesfoundonline.com/video/";
     const { id } = input.ids;
+    await requestCache(id);
 
     const result = await fetchRemote(baseUrl + id, {});
     const html = await result.text();
