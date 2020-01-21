@@ -7,10 +7,10 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 ) => {
     console.log("directoryHandler", { input });
 
-    const { directoryId } = input;
-    await requestCache(directoryId);
+    const { id } = input;
+    await requestCache(id);
 
-    if (!directoryId) {
+    if (!id) {
         return {
             hasMore: false,
             items: [
@@ -54,10 +54,7 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
     }
 
     const items: Item[] = [];
-    const result = await fetchRemote(
-        "https://moviesfoundonline.com/" + directoryId,
-        {}
-    );
+    const result = await fetchRemote("https://moviesfoundonline.com/" + id, {});
 
     if (!result.ok) {
         throw new Error(`Request finished with status ${result.status}`);
