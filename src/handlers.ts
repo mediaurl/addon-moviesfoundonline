@@ -1,9 +1,9 @@
-import { Item, WorkerHandlers } from "@watchedcom/sdk";
+import { MainItem, WorkerHandlers } from "@watchedcom/sdk";
 import * as cheerio from "cheerio";
 
 export const directoryHandler: WorkerHandlers["directory"] = async (
     input,
-    { fetchRemote, requestCache }
+    { fetch, requestCache }
 ) => {
     console.log("directoryHandler", { input });
 
@@ -53,8 +53,8 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
         };
     }
 
-    const items: Item[] = [];
-    const result = await fetchRemote("https://moviesfoundonline.com/" + id, {});
+    const items: MainItem[] = [];
+    const result = await fetch("https://moviesfoundonline.com/" + id, {});
 
     if (!result.ok) {
         throw new Error(`Request finished with status ${result.status}`);
@@ -97,7 +97,7 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
 export const itemHandler: WorkerHandlers["item"] = async (
     input,
-    { fetchRemote, requestCache }
+    { fetch, requestCache }
 ) => {
     console.log("itemHandler", { input });
 
@@ -105,7 +105,7 @@ export const itemHandler: WorkerHandlers["item"] = async (
     const { id } = input.ids;
     await requestCache(id);
 
-    const result = await fetchRemote(baseUrl + id, {});
+    const result = await fetch(baseUrl + id, {});
     const html = await result.text();
 
     if (!result.ok) {
