@@ -1,14 +1,18 @@
 import { MainItem, WorkerHandlers } from "@watchedcom/sdk";
 import * as cheerio from "cheerio";
+import fetch from "node-fetch";
 
 export const directoryHandler: WorkerHandlers["directory"] = async (
     input,
-    { fetch, requestCache }
+    { requestCache }
 ) => {
     console.log("directoryHandler", { input });
 
     const { id } = input;
-    await requestCache(id);
+    await requestCache(id, {
+        ttl: Infinity,
+        refreshInterval: 24 * 3600 * 1000
+    });
 
     if (!id) {
         return {
@@ -97,13 +101,16 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
 export const itemHandler: WorkerHandlers["item"] = async (
     input,
-    { fetch, requestCache }
+    { requestCache }
 ) => {
     console.log("itemHandler", { input });
 
     const baseUrl = "https://moviesfoundonline.com/video/";
     const { id } = input.ids;
-    await requestCache(id);
+    await requestCache(id, {
+        ttl: Infinity,
+        refreshInterval: 24 * 3600 * 1000
+    });
 
     const result = await fetch(baseUrl + id, {});
     const html = await result.text();

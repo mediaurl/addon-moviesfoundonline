@@ -1,6 +1,6 @@
 {
     "name": "addon-moviesfoundonline",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "dist",
     "scripts": {
@@ -11,15 +11,17 @@
     },
     "devDependencies": {
         "@types/cheerio": "^0.22.16",
+        "@types/node-fetch": "^2.5.5",
         "husky": "^4.2.3",
-        "lint-staged": "^10.0.7",
+        "lint-staged": "^10.0.8",
         "prettier": "^1.19.1",
         "tslint": "^6.0.0",
-        "typescript": "^3.7.5"
+        "typescript": "^3.8.3"
     },
     "dependencies": {
-        "@watchedcom/sdk": "^0.13.1",
-        "cheerio": "^1.0.0-rc.3"
+        "@watchedcom/sdk": "^0.18.3",
+        "cheerio": "^1.0.0-rc.3",
+        "node-fetch": "^2.6.0"
     },
     "husky": {
         "hooks": {
