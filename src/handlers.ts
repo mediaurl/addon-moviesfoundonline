@@ -81,8 +81,9 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
     const { genre } = input.filter;
 
     const url =
+        <string>input.cursor ??
         "https://moviesfoundonline.com/" +
-        (genre ? `genre/${genre}` : directoryId);
+            (genre ? `genre/${genre}` : directoryId);
 
     const result = await fetch(url, {});
 
@@ -127,7 +128,7 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
     });
 
     return {
-        nextCursor: null,
+        nextCursor: $("a.next").attr("href") || null,
         items
     };
 };
