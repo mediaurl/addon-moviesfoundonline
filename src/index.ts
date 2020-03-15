@@ -11,20 +11,26 @@ export const moviesFoundOnline = createWorkerAddon({
     flags: {
         adult: false
     },
-    resources: [
-        {
-            name: {
-                en: "Movies",
-                de: "Filme"
-            },
-            actions: ["directory", "item"],
-            itemTypes: ["movie"],
-            defaultOptions: {
-                imageShape: "landscape",
-                displayName: true
-            }
-        }
-    ]
+    actions: ["directory", "item"],
+    itemTypes: ["movie"],
+    defaultDirectoryOptions: {
+        displayName: true,
+        imageShape: "landscape"
+    }
+    // resources: [
+    //     {
+    //         name: {
+    //             en: "Movies",
+    //             de: "Filme"
+    //         },
+    //         actions: ["directory", "item"],
+    //         itemTypes: ["movie"],
+    //         defaultOptions: {
+    //             imageShape: "landscape",
+    //             displayName: true
+    //         }
+    //     }
+    // ]
 });
 
 moviesFoundOnline.registerActionHandler("directory", directoryHandler);

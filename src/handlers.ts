@@ -1,22 +1,46 @@
-import { Item, WorkerHandlers } from "@watchedcom/sdk";
+import { MovieItem, WorkerHandlers } from "@watchedcom/sdk";
 import * as cheerio from "cheerio";
+
+let genresPromise;
 
 export const directoryHandler: WorkerHandlers["directory"] = async (
     input,
-    { fetchRemote }
+    { fetch }
 ) => {
     console.log("directoryHandler", { input });
 
-    const { directoryId } = input;
+    const directoryId = input.id;
 
     if (!directoryId) {
+        genresPromise =
+            genresPromise ||
+            fetch("https://moviesfoundonline.com/free-movies/").then(
+                async resp => {
+                    const $ = cheerio.load(await resp.text());
+                    const result: string[] = [];
+                    $("a.tag-cloud-link").each((index, elem) => {
+                        result.push($(elem).text());
+                    });
+                    return result;
+                }
+            );
+
         return {
-            hasMore: false,
+            nextCursor: null,
             items: [
                 {
                     type: "directory",
                     id: "free-movies",
-                    name: "Full Movies"
+                    name: "Full Movies",
+                    features: {
+                        filter: [
+                            {
+                                id: "genre",
+                                name: "Film Genre",
+                                values: await genresPromise
+                            }
+                        ]
+                    }
                 },
                 {
                     type: "directory",
@@ -52,11 +76,15 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
         };
     }
 
-    const items: Item[] = [];
-    const result = await fetchRemote(
-        "https://moviesfoundonline.com/" + directoryId,
-        {}
-    );
+    const items: MovieItem[] = [];
+
+    const { genre } = input.filter;
+
+    const url =
+        "https://moviesfoundonline.com/" +
+        (genre ? `genre/${genre}` : directoryId);
+
+    const result = await fetch(url, {});
 
     if (!result.ok) {
         throw new Error(`Request finished with status ${result.status}`);
@@ -66,19 +94,25 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
     const $ = cheerio.load(html);
 
-    $("div.item-img").each(function(index, elem) {
-        const aElem = $(elem)
+    $("div.video-section > div > div.item-img").each(function(index, elem) {
+        const firstLink = $(elem)
             .find("a")
             .first();
-        const name = aElem.attr("title");
-        const href = aElem.attr("href");
+
+        const genresPageTitle = $(elem)
+            .next("h3")
+            .text();
+        const defaultPageTitle = firstLink.attr("title");
+
+        const name = defaultPageTitle || genresPageTitle;
+        const href = firstLink.attr("href");
         if (!href) return;
         const id = <string>href
             .split("/")
             .filter(_ => _)
             .pop();
 
-        const posterImgElem = $(aElem)
+        const posterImgElem = $(firstLink)
             .find("img")
             .first();
 
@@ -93,14 +127,12 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
     });
 
     return {
+        nextCursor: null,
         items
     };
 };
 
-export const itemHandler: WorkerHandlers["item"] = async (
-    input,
-    { fetchRemote, addon }
-) => {
+export const itemHandler: WorkerHandlers["item"] = async (input, { fetch }) => {
     console.log("itemHandler", { input });
 
     const baseUrl = "https://moviesfoundonline.com/video/";
@@ -108,7 +140,7 @@ export const itemHandler: WorkerHandlers["item"] = async (
         ids: { id }
     } = input;
 
-    const result = await fetchRemote(baseUrl + id, {});
+    const result = await fetch(baseUrl + id, {});
 
     const html = await result.text();
 
