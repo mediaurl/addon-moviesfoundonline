@@ -5,11 +5,16 @@ let genresPromise;
 
 export const directoryHandler: WorkerHandlers["directory"] = async (
     input,
-    { fetch }
+    { fetch, requestCache }
 ) => {
     console.log("directoryHandler", { input });
 
     const directoryId = input.id;
+
+    await requestCache(directoryId, {
+        ttl: Infinity,
+        refreshInterval: 24 * 3600 * 1000
+    });
 
     if (!directoryId) {
         genresPromise =
@@ -133,16 +138,21 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
     };
 };
 
-export const itemHandler: WorkerHandlers["item"] = async (input, { fetch }) => {
+export const itemHandler: WorkerHandlers["item"] = async (
+    input,
+    { requestCache, fetch }
+) => {
     console.log("itemHandler", { input });
 
     const baseUrl = "https://moviesfoundonline.com/video/";
-    const {
-        ids: { id }
-    } = input;
+    const { id } = input.ids;
+
+    await requestCache(id, {
+        ttl: Infinity,
+        refreshInterval: 24 * 3600 * 1000
+    });
 
     const result = await fetch(baseUrl + id, {});
-
     const html = await result.text();
 
     if (!result.ok) {
@@ -160,22 +170,12 @@ export const itemHandler: WorkerHandlers["item"] = async (input, { fetch }) => {
         .first()
         .prop("src");
 
-    const youtubeId = frameSrc.split("/").pop();
-
     return {
         type: "movie",
         ids: { id },
         name,
         description,
-        sources: [
-            {
-                type: "url",
-                id: frameSrc,
-                name,
-                url: `https://www.youtube.com/watch?v=${youtubeId}`
-                // url: frameSrc
-            }
-        ],
+        sources: [{ type: "url", name, url: frameSrc }],
         videos: []
     };
 };

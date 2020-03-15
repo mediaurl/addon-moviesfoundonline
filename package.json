@@ -1,12 +1,12 @@
 {
-    "name": "addon-moviesfoundonline",
-    "version": "1.0.0",
+    "name": "watched-addon-moviesfoundonline",
+    "version": "1.0.1",
     "description": "",
     "main": "dist",
     "scripts": {
         "build": "tsc",
-        "start": "watched-sdk start --prod dist",
-        "develop": "watched-sdk start",
+        "start": "watched-sdk start --single --prod",
+        "develop": "watched-sdk start --single",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {
@@ -18,7 +18,7 @@
         "typescript": "^3.8.3"
     },
     "dependencies": {
-        "@watchedcom/sdk": "latest",
+        "@watchedcom/sdk": "^0.20.2",
         "cheerio": "^1.0.0-rc.3"
     },
     "husky": {
