@@ -1,4 +1,4 @@
-import { MovieItem, WorkerHandlers } from "@watchedcom/sdk";
+import { MovieItem, WorkerHandlers } from "@mediaurl/sdk";
 import * as cheerio from "cheerio";
 
 let genresPromise;
@@ -13,14 +13,14 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
     await requestCache(directoryId, {
         ttl: Infinity,
-        refreshInterval: 24 * 3600 * 1000
+        refreshInterval: 24 * 3600 * 1000,
     });
 
     if (!directoryId) {
         genresPromise =
             genresPromise ||
             fetch("https://moviesfoundonline.com/free-movies/").then(
-                async resp => {
+                async (resp) => {
                     const $ = cheerio.load(await resp.text());
                     const result: string[] = [];
                     $("a.tag-cloud-link").each((index, elem) => {
@@ -42,42 +42,42 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
                             {
                                 id: "genre",
                                 name: "Film Genre",
-                                values: await genresPromise
-                            }
-                        ]
-                    }
+                                values: await genresPromise,
+                            },
+                        ],
+                    },
                 },
                 {
                     type: "directory",
                     id: "short-films",
-                    name: "Short Films"
+                    name: "Short Films",
                 },
                 {
                     type: "directory",
                     id: "free-documentaries",
-                    name: "Documentaries"
+                    name: "Documentaries",
                 },
                 {
                     type: "directory",
                     id: "animation",
-                    name: "Animation"
+                    name: "Animation",
                 },
                 {
                     type: "directory",
                     id: "series-shows",
-                    name: "Series & Shows"
+                    name: "Series & Shows",
                 },
                 {
                     type: "directory",
                     id: "stand-up-comedy",
-                    name: "Stand-Up & Comedy"
+                    name: "Stand-Up & Comedy",
                 },
                 {
                     type: "directory",
                     id: "viral-videos",
-                    name: "Viral Videos"
-                }
-            ]
+                    name: "Viral Videos",
+                },
+            ],
         };
     }
 
@@ -100,14 +100,10 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
 
     const $ = cheerio.load(html);
 
-    $("div.video-section > div > div.item-img").each(function(index, elem) {
-        const firstLink = $(elem)
-            .find("a")
-            .first();
+    $("div.video-section > div > div.item-img").each(function (index, elem) {
+        const firstLink = $(elem).find("a").first();
 
-        const genresPageTitle = $(elem)
-            .next("h3")
-            .text();
+        const genresPageTitle = $(elem).next("h3").text();
         const defaultPageTitle = firstLink.attr("title");
 
         const name = defaultPageTitle || genresPageTitle;
@@ -115,26 +111,24 @@ export const directoryHandler: WorkerHandlers["directory"] = async (
         if (!href) return;
         const id = <string>href
             .split("/")
-            .filter(_ => _)
+            .filter((_) => _)
             .pop();
 
-        const posterImgElem = $(firstLink)
-            .find("img")
-            .first();
+        const posterImgElem = $(firstLink).find("img").first();
 
         items.push({
             type: "movie",
             ids: { id },
             name,
             images: {
-                poster: posterImgElem.attr("src")
-            }
+                poster: posterImgElem.attr("src"),
+            },
         });
     });
 
     return {
         nextCursor: $("a.next").attr("href") || null,
-        items
+        items,
     };
 };
 
@@ -149,7 +143,7 @@ export const itemHandler: WorkerHandlers["item"] = async (
 
     await requestCache(id, {
         ttl: Infinity,
-        refreshInterval: 24 * 3600 * 1000
+        refreshInterval: 24 * 3600 * 1000,
     });
 
     const result = await fetch(baseUrl + id, {});
@@ -161,14 +155,10 @@ export const itemHandler: WorkerHandlers["item"] = async (
 
     const $ = cheerio.load(html);
 
-    const name = $("h1")
-        .first()
-        .text();
+    const name = $("h1").first().text();
     const description = $("div.post-entry p").text();
 
-    const frameSrc = $("iframe")
-        .first()
-        .prop("src");
+    const frameSrc = $("iframe").first().prop("src");
 
     return {
         type: "movie",
@@ -176,6 +166,6 @@ export const itemHandler: WorkerHandlers["item"] = async (
         name,
         description,
         sources: [{ type: "url", name, url: frameSrc }],
-        videos: []
+        videos: [],
     };
 };

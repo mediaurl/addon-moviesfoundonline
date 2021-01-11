@@ -1,4 +1,4 @@
-import { createWorkerAddon } from "@watchedcom/sdk";
+import { createWorkerAddon, runCli } from "@mediaurl/sdk";
 
 import { directoryHandler, itemHandler } from "./handlers";
 
@@ -11,14 +11,14 @@ export const moviesFoundOnline = createWorkerAddon({
         "https://mfo.bladecdn.net/wp-content/uploads/2015/05/38-512-5543f00fv1_site_icon-32x32.png",
     description: "Addon for moviesfoundonline.com",
     flags: {
-        adult: false
+        adult: false,
     },
     actions: ["directory", "item"],
     itemTypes: ["movie"],
     defaultDirectoryOptions: {
         displayName: true,
-        imageShape: "landscape"
-    }
+        imageShape: "landscape",
+    },
     // resources: [
     //     {
     //         name: {
@@ -38,4 +38,4 @@ export const moviesFoundOnline = createWorkerAddon({
 moviesFoundOnline.registerActionHandler("directory", directoryHandler);
 moviesFoundOnline.registerActionHandler("item", itemHandler);
 
-export default moviesFoundOnline;
+runCli([moviesFoundOnline]);
